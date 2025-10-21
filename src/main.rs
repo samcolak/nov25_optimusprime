@@ -21,10 +21,10 @@ fn is_prime(n: i32) -> bool {
                 if _m > 1 {
                     let mut _t = 3;
                     while _t <= _m {
-                        if n % _t == 0 {
+                        if k % _t == 0 {
                             return false;
                         }
-                        _t += 2;
+                        _t += 2; // ignore even numbers as factors...
                     }
                 }
             }
