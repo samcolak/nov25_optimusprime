@@ -1,52 +1,68 @@
 
 #![allow(while_true)]
 
+use std::time::{Duration, Instant};
 
-fn is_prime(n: i32) -> bool {
+
+fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
 
     match n {
 
-        0 => return false,
+        0 => false,
         
-        1 | 2 => return true,
+        1..=3 => true,
                 
         k => {
 
-            if k % 2 == 0 {
-                return false;
-            } else if (k % 5 == 0) && (k != 5) {
-                return false
-            } else {
-                let _m = (n-1) / 2;
-                if _m > 1 {
-                    let mut _t = 3;
-                    while _t <= _m {
-                        if k % _t == 0 {
+            if (k & 1) == 1 {
+        
+                // if we have a potential prime (_p == true...) - check if it really is a prime..
+
+                if (((n - 1) % 6) == 0) || (((n + 1) % 6) == 0) {
+
+                    for _f in factors {
+                        if n % _f == 0 {
                             return false;
                         }
-                        _t += 2; // ignore even numbers as factors...
                     }
+
+                    true
+
+                } else {
+
+                    false
+                    
                 }
+
+            } else {
+
+                false
+                
             }
 
         }
 
-    };
-
-    true
+    }
 
 }
 
 
 fn main() {
 
-    let mut _n = 1;
+    let mut _n = 2;
     let mut _inc = 1;
+    let mut _top = 0;
+
+    let mut _factors: Vec<i32> = Vec::new();
+
+    let _start = Instant::now();
+    let _duration = Duration::from_secs(30);
 
     while true {
 
-        if is_prime(_n) {
-            println!("{_n} is prime");
+        if is_prime(_n, &_factors) {
+            _top = _n;
+            _factors.push(_n);
         }
 
         _n += _inc;
@@ -55,6 +71,12 @@ fn main() {
             _inc = 2;
         }
 
+        if _start.elapsed() > _duration {
+            break;
+        }
+
     };
+
+    println!("highest prime = {_top}");
 
 }
