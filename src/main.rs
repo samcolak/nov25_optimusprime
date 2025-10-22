@@ -1,10 +1,10 @@
 
 #![allow(while_true)]
 
-use std::time::{Duration, Instant};
+use std::{time::{Duration, Instant}};
 
 
-fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
+async fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
 
     match n {
 
@@ -20,13 +20,20 @@ fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
 
                 if (((n - 1) % 6) == 0) || (((n + 1) % 6) == 0) {
 
+                    let mut _found = false;
+                    let _m = f32::sqrt(n as f32) as i32;
+
                     for _f in factors {
+                        if _f > &_m {
+                            break;
+                        }
                         if n % _f == 0 {
-                            return false;
+                            _found = true;
+                            break;
                         }
                     }
 
-                    true
+                    !_found
 
                 } else {
 
@@ -37,7 +44,7 @@ fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
             } else {
 
                 false
-                
+
             }
 
         }
@@ -47,7 +54,8 @@ fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
 }
 
 
-fn main() {
+#[tokio::main]
+async fn main() {
 
     let mut _n = 2;
     let mut _inc = 1;
@@ -60,7 +68,7 @@ fn main() {
 
     while true {
 
-        if is_prime(_n, &_factors) {
+        if is_prime(_n, &_factors).await {
             _top = _n;
             _factors.push(_n);
         }
