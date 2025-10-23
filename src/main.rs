@@ -36,15 +36,11 @@ async fn is_prime(n: i32, factors: &Vec<i32>) -> bool {
                     !_found
 
                 } else {
-
                     false
-                    
                 }
 
             } else {
-
                 false
-
             }
 
         }
